@@ -4,7 +4,9 @@ const dotenv = require("dotenv");
 const app = express();
 dotenv.config();
 const http = require("http");
-const cors=require("cors")
+const cors=require("cors");
+const cookie=require("cookie-parser")
+const route = require("./src/routers");
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 const MONGODB = process.env.MONGODB;
@@ -17,7 +19,7 @@ mongoose
     console.log("Db connect success");
   })
   .catch((error) => {
-    console.log("Db connect fail");
+    console.log("Db connect fail ",error);
     process.exit(1);
   });
 
@@ -32,8 +34,12 @@ const crossOptions = {
   optionsSuccessStatus: 204,
 };
 
+app.use(cookie())
+
 app.use(cors(crossOptions))
 
+// router
+route(app)
 server.listen(PORT, () => {
   console.log(`Server listen on port ${PORT}`);
 });
