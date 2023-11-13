@@ -21,7 +21,7 @@ class UserController {
     const { email, password } = req.body;
     try {
       await UserRepository.login({ res, email, password });
-      return res.status(201).json("login successfully");
+      // return res.status(201).json("login successfully");
     } catch (error) {
       return res.status(501).json("fail to login");
     }
@@ -32,6 +32,30 @@ class UserController {
         await UserRepository.currentUser(req,res)
     } catch (error) {
         res.json(501).status("User undefine")
+    }
+  }
+
+  async getAllUser(req,res){
+    try {
+      await UserRepository.getAllUser(res)
+    } catch (error) {
+      res.json("Internal server error")
+    }
+  }
+
+  async getUserById(req,res){
+    try {
+      await UserRepository.getUserById(req,res)
+    } catch (error) {
+      res.json("Internal server error")
+    }
+  }
+
+  async getUserWasChat(req,res){
+    try {
+      await UserRepository.getUserWasChat(req,res)
+    } catch (error) {
+      res.json("Internal server error")
     }
   }
 }

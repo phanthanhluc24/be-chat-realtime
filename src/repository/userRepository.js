@@ -31,11 +31,11 @@ class UserRepository {
           }
         );
         res.cookie("token", token, { httpOnly: true });
+        return res.status(201).json(token);
     } catch (error) {
         res.status(501).json("Internal Server Error")
     }
   }
-
   async currentUser(req,res){
     try {
         const token=req.headers.authorization.split(" ")
@@ -47,6 +47,35 @@ class UserRepository {
         })
     } catch (error) {
         res.status(501).json("User undefine")
+    }
+  }
+
+  async getAllUser(res){
+    try {
+      const user=await userModel.find()
+      res.status(201).json(user)
+    } catch (error) {
+      res.status(501).json("Can't get all user")
+    }
+  }
+
+  async getUserById(req,res){
+    try {
+      const {id}=req.params
+      const user=await userModel.findById(id)
+      res.json(user)
+    } catch (error) {
+      res.status(501).json("User undefine")
+    }
+  }
+
+  async getUserWasChat(req,res){
+    try {
+      const {id}=req.params
+      const user=await userModel.find({_id:{$in:id}})
+      res.status(201).json(user)
+    } catch (error) {
+      res.status(501).json(error)
     }
   }
 }
