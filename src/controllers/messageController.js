@@ -7,5 +7,13 @@ class MessageController{
             console.log(error);
         }
     }
+
+    async getMessageConversationByChatId(req,res){
+        try {
+            await messageRepository.getMessageConversationByChatId(req,res)
+        } catch (error) {
+            res.status(501).json(error)
+        }
+    }
 }
 module.exports=new MessageController()
