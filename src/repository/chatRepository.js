@@ -3,13 +3,13 @@ class ChatRepository{
     async getChatWithUser(req,res){
         const {id}=req.params
         try {
-            const chatWithUser=await chatModel.find({users:{$in:[id]}})
+            const chatWithUser=await chatModel.find({users:{$in:[id]}}).sort({createdAt:-1})
             res.status(201).json(chatWithUser)
         } catch (error) {
             res.status(501).json(error)
         }
     }
-
+    
     async compareGetIdRoomChat(req,res){
         const senderId=req.params.senderId
         const receivedId=req.params.receivedId

@@ -1,6 +1,6 @@
 const messageModel = require("../models/messageModel");
 const chatModel = require("../models/chatModel");
-
+const mongoose = require('mongoose');
 class MessageController {
   async findChat(senderId, receivedId) {
     try {
@@ -42,11 +42,15 @@ class MessageController {
   async getMessageConversationByChatId(req, res) {
     const { id } = req.params;
     try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+      return  res.status(201).json([]);
+      }
       const message = await messageModel
         .find({ chatId: id })
         .populate("chatId")
-      res.status(201).json(message);
+          res.status(201).json(message);
     } catch (error) {
+      console.error(error);
       res.status(501).json(error);
     }
   }
